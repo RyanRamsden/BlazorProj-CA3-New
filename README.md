@@ -1,0 +1,2 @@
+****Important***
+I had a problem with project which accidentally deleted a load of it on github and in visual studio and I eventually managed to restore it and then I couldnt get my tests project folder to add to old github repo so I ended up making this new github repo in order to get the repo set up correctly and make sure everthing I needed was added and inside the repo. So this is why I have little commits as I had to make a new repo where as old repo had 15 commits but had to make new repo so starting commits from 0 again.
