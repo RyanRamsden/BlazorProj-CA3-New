@@ -43,7 +43,11 @@ jobs:
       # Start Blazor app in background
       - name: Start Blazor App
         run: dotnet run --project BlazorProj-CA3/BlazorProj-CA3.csproj --urls "http://localhost:5252" &
-      
+
+      # Wait a few seconds for server to boot
+      - name: Wait for server startup
+        run: sleep 15
+
       # Run Playwright tests
       - name: Run Tests
         run: dotnet test BlazorProj-CA3-Tests/BlazorProj-CA3-Tests.csproj -c Release --logger "console;verbosity=detailed"
