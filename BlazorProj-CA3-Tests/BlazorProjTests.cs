@@ -20,7 +20,7 @@ namespace BlazorProj_CA3_Tests
         {
             // Start the Blazor app before running tests
             _appProcess = StartApp(@"..\..\..\BlazorProj-CA3\BlazorProj-CA3.csproj");
-            await WaitForApp($"{BaseUrl}/search");
+            await WaitForApp($"{BaseUrl}");
 
 
             Playwright = await Microsoft.Playwright.Playwright.CreateAsync();
