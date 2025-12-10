@@ -1,0 +1,47 @@
+name: Build, Test, and Deploy Blazor WASM
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout code
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Setup .NET
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+
+      # Restore and build
+      - name: Restore
+        run: dotnet restore BlazorProj-CA3.sln
+
+      - name: Build
+        run: dotnet build BlazorProj-CA3.sln --configuration Release --no-restore
+
+      # Run Playwright tests
+      - name: Install Playwright browsers
+        run: pwsh ./BlazorProj-CA3-Tests/bin/Release/net9.0/playwright.ps1 install --with-deps
+
+      - name: Run tests
+        run: dotnet test BlazorProj-CA3-Tests/BlazorProj-CA3-Tests.csproj --configuration Release --logger "console;verbosity=detailed"
+
+      # Publish Blazor WASM
+      - name: Publish Blazor WASM
+        run: dotnet publish BlazorProj-CA3/BlazorProj-CA3.csproj -c Release -o publish
+
+      # Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: publish/wwwroot
