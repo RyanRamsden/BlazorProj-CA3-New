@@ -21,15 +21,28 @@ namespace BlazorProj_CA3_Tests
             await _bp.Page.WaitForSelectorAsync("div#app", new() { Timeout = 60000 });
 
             var input = _bp.Page.GetByTestId("keyword-search");
-            await input.WaitForAsync(new() { State = WaitForSelectorState.Visible, Timeout = 120000 });
+            await input.WaitForAsync(new LocatorWaitForOptions
+            {
+                State = WaitForSelectorState.Visible,
+                Timeout = 60000
+            });
             await input.FillAsync("dog");
 
             var button = _bp.Page.GetByTestId("search-btn");
-            await button.WaitForAsync(new() { State = WaitForSelectorState.Visible, Timeout = 120000 });
+            await button.WaitForAsync(new LocatorWaitForOptions
+            {
+                State = WaitForSelectorState.Visible,
+                Timeout = 60000
+            });
             await button.ClickAsync();
 
             var list = _bp.Page.GetByTestId("results-list");
-            await list.WaitForAsync(new() { State = WaitForSelectorState.Visible, Timeout = 120000 });
+            await list.WaitForAsync(new LocatorWaitForOptions
+            {
+                State = WaitForSelectorState.Visible,
+                Timeout = 60000
+            });
+
 
             var items = _bp.Page.GetByTestId("results-item");
             await _bp.Page.WaitForFunctionAsync(@"() => document.querySelectorAll('[data-testid=""results-item""]').length > 0", new() { Timeout = 120000 });
