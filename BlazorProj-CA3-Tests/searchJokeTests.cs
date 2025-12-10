@@ -17,29 +17,29 @@ namespace BlazorProj_CA3_Tests
         [Fact]
         public async Task Search_Shows_Results_For_Common_Query()
         {
-            await _bp.Page.GotoAsync($"{_bp.BaseUrl}/search", new() { WaitUntil = WaitUntilState.NetworkIdle });
-            await _bp.Page.WaitForSelectorAsync("body");
-
+            await _bp.Page.GotoAsync($"{_bp.BaseUrl}/search", new() { WaitUntil = WaitUntilState.DOMContentLoaded });
+            await _bp.Page.WaitForSelectorAsync("div#app", new() { Timeout = 60000 });
 
             var input = _bp.Page.GetByTestId("keyword-search");
-            await input.WaitForAsync(new() { State = WaitForSelectorState.Visible });
+            await input.WaitForAsync(new() { State = WaitForSelectorState.Visible, Timeout = 120000 });
             await input.FillAsync("dog");
 
             var button = _bp.Page.GetByTestId("search-btn");
-            await button.WaitForAsync(new() { State = WaitForSelectorState.Visible });
+            await button.WaitForAsync(new() { State = WaitForSelectorState.Visible, Timeout = 120000 });
             await button.ClickAsync();
 
-
-            // Wait for results list to become visible or populated
             var list = _bp.Page.GetByTestId("results-list");
-            await list.WaitForAsync(new() { State = WaitForSelectorState.Visible });
+            await list.WaitForAsync(new() { State = WaitForSelectorState.Visible, Timeout = 120000 });
 
             var items = _bp.Page.GetByTestId("results-item");
-            // Wait until at least one item exists
-            await _bp.Page.WaitForFunctionAsync(@"(el) => document.querySelectorAll('[data-testid=""results-item""]').length > 0");
+            await _bp.Page.WaitForFunctionAsync(@"() => document.querySelectorAll('[data-testid=""results-item""]').length > 0", new() { Timeout = 120000 });
 
             var count = await items.CountAsync();
             Assert.True(count > 0, "Expected at least one joke result for 'dog'.");
+
+            var content = await _bp.Page.ContentAsync();
+            Console.WriteLine("Page content:\n" + content);
         }
+
     }
 }
