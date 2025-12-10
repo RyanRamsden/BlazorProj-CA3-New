@@ -23,7 +23,7 @@ jobs:
 
       # Restore and build
       - name: Restore
-        run: dotnet restore BlazorProj-CA3.sln
+        run: dotnet restore BlazorProj-CA3/BlazorProj-CA3.sln
 
       - name: Build
         run: dotnet build BlazorProj-CA3.sln --configuration Release --no-restore
